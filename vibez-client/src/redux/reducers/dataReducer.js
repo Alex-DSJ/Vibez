@@ -2,7 +2,8 @@ import {SET_SCREAMS,
     LIKE_SCREAM,UNLIKE_SCREAM,
     LOADING_DATA,
     DELETE_SCREAM,
-POST_SCREAM} from '../types'
+POST_SCREAM,
+SET_SCREAM} from '../types'
 
 const initialState = {
     screams: [],
@@ -30,11 +31,15 @@ export default function(state = initialState,action){
             let index = state.screams.findIndex((scream)=>scream.screamId === action.payload.screamId);
             //check error here, screamId is not found
             state.screams[index]=action.payload;
+            if(state.scream.screamId === action.payload.screamId){
+                state.scream = action.payload //update the scream displayed after the action is made
+                //problem solved here: clicking the like button in the diaglog does not update the like counted
+            }
             return {
                 ...state
             };
         case  DELETE_SCREAM:
-            index = state.screams.findIndex(scream => scream.screamId === action.payload);
+            index = state.screams.findIndex(scream => scream.screamId === action.payload);//payload is the scream ID from dataAction
             state.screams.splice(index, 1);
             return {
                 ...state
@@ -44,7 +49,11 @@ export default function(state = initialState,action){
                 ...state,//return the state as it was
                 screams: [action.payload, ...state.screams]//return all the screams including the new added
               };
-        
+        case SET_SCREAM:
+            return {
+                ...state,//without this, cannot display avatar for the scream.. hmmm 
+                scream: action.payload
+            }
         default:
             return state;
     }

@@ -51,7 +51,9 @@ export default function(state = initialState, action) {
         return {
           ...state, //retrieve the state
           likes: state.likes.filter(
-            (like)=> like.screamId === action.payload.screamId // retrieve the like from the screamId
+            (like)=> like.screamId !== action.payload.screamId // retrieve the id of the removed scream.
+            // This id will be used to update local screams defined in dataAction.js
+            
 
           )
         };//done in this file

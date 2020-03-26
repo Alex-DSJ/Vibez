@@ -18,6 +18,7 @@ import FavoriteBorder from '@material-ui/icons/FavoriteBorder'
 import Favorite from '@material-ui/icons/Favorite'
 import {connect} from 'react-redux';
 import {likeScream, unlikeScream} from '../redux/actions/dataActions'
+import LikeButton from './LikeButton';
 const styles = {
   card: {
     position: 'relative',
@@ -34,21 +35,7 @@ const styles = {
 };
 
 class Scream extends Component {
-  likedScream = ()=>{
-    //first, check if there is a like in the user object
-   //if there is something, return true, else return false
-    if(this.props.user.likes && this.props.user.likes.find(like => like.screamId === this.props.scream.screamId
-      )
-    ) return true;
-    else return false;
-  };
-
-  likeScream = () => {
-    this.props.likeScream(this.props.scream.screamId);
-  };
-  unlikeScream = () => {
-    this.props.unlikeScream(this.props.scream.screamId);
-  }
+  
   render() {
     dayjs.extend(relativeTime); //what does ths line do
     const {
@@ -66,28 +53,10 @@ class Scream extends Component {
         authenticated, credentials: {handle}
       }
     } = this.props; //distructuing ? defactoring
-    //defining the likeButton, doing this way since it requires if,else
-    const likeButton = !authenticated? ( //favoriteborder is the transparent heart icon
-      <MyButton tip="like">
-        <Link to="/login">
-          <FavoriteBorder color='primary'/> 
-        </Link>
-      </MyButton>
-    ) : ( //after loging in
-      this.likedScream() ? ( //have you liked it? Yes, show the heart
-        <MyButton tip="undo like" onClick={this.unlikeScream}>
-          <Favorite color="primary"/>
-        </MyButton>
-      ) : ( //havent liked ? Show the transparent heart
-        <MyButton tip="like" onClick={this.likeScream}>
-          <FavoriteBorder color="primary"/>
-        </MyButton>
-      )
-    );
-        //finish defining likeButton
+    
 
     //start defining deleteButton
-    const deleteButton = authenticated && userHandle === handle?
+    const deleteButton = authenticated && (userHandle === handle)?
      (
        <DeleteScream screamId={screamId}/>
      ):null;
@@ -113,9 +82,9 @@ class Scream extends Component {
             {dayjs(createdAt).fromNow()}{' '}
             {/* in order to get rid of errors, change all Date to string type */}
           </Typography>
-          
+          <LikeButton screamId={screamId}/>
           <Typography variant='body1'>{body}</Typography>
-          {likeButton}
+      
           <span>{likeCount} Likes</span>
           <MyButton tip="comments">
             <ChatIcon color="primary"/>
@@ -140,9 +109,5 @@ const mapStateToProps= state => ({
   user: state.user
 })
 
-const mapActionsToProps = {
-  likeScream,
-  unlikeScream
-}
 
-export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(Scream));
+export default connect(mapStateToProps)(withStyles(styles)(Scream));
