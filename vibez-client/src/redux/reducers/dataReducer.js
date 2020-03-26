@@ -2,7 +2,8 @@ import {SET_SCREAMS,
     LIKE_SCREAM,UNLIKE_SCREAM,
     LOADING_DATA,
     DELETE_SCREAM,
-POST_SCREAM} from '../types'
+POST_SCREAM,
+SET_SCREAM} from '../types'
 
 const initialState = {
     screams: [],
@@ -44,7 +45,11 @@ export default function(state = initialState,action){
                 ...state,//return the state as it was
                 screams: [action.payload, ...state.screams]//return all the screams including the new added
               };
-        
+        case SET_SCREAM:
+            return {
+                ...state,//without this, cannot display avatar for the scream.. hmmm 
+                scream: action.payload
+            }
         default:
             return state;
     }
