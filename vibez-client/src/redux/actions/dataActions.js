@@ -45,7 +45,7 @@ export const likeScream=(screamId)=>dispatch=>{
 
 //unlike a scream
 export const unlikeScream=(screamId)=>dispatch=>{
-    axios.get(`/scream/${screamId}/unlike`).
+    axios.get(`/scream/${screamId}/unlike`). //send a request to this url built in backend step
         then(res=>{
             dispatch({
                 type:UNLIKE_SCREAM,
@@ -62,7 +62,8 @@ export const deleteScream = (screamId) => (dispatch) => {
     axios
       .delete(`/scream/${screamId}`)
       .then(() => {
-        dispatch({ type: DELETE_SCREAM, payload: screamId });
+        dispatch({ type: DELETE_SCREAM, payload: screamId });//get the screamId removed, then used to update the local screams array
+        //problem solved here using payload: after deleting, though being removed from the database, the info still appears on local newsfeed
       })
       .catch((err) => console.log(err));
   };
