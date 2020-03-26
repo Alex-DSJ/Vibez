@@ -53,8 +53,8 @@ export const logoutUser = () => dispatch => {
 export const getUserData = () => dispatch => {
   dispatch({ type: LOADING_USER });
   axios
-    .get('./user')
-    .then(res => {
+    .get('/user')
+    .then(res => {//compiling error here.. 
       dispatch({
         type: SET_USER,
         payload: res.data
@@ -72,6 +72,17 @@ export const uploadImage = formData => dispatch => {
     })
     .catch(err => console.log(err));
 };
+
+export const editUserDetails = (userDetails)=>(dispatch)=>{
+  dispatch({type:LOADING_USER}); //why dispatch does not change the color
+  axios.post('/user',userDetails)
+    .then(()=>{
+      dispatch(getUserData());
+    })
+    .catch(err=>
+      console.log(err)
+    );
+}
 
 const setAuthorizationHeader = token => {
   const FBIdToken = `Bearer ${token}`;
