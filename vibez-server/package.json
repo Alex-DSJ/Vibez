@@ -20,7 +20,7 @@
   "dependencies": {
     "chokidar": "^3.0.0",
     "cookie-parser": "^1.4.4",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "history": "^4.10.1",
     "mocha": "^7.1.0",
     "mongodb": "^3.5.2",
